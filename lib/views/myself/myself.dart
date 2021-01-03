@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class Group extends StatelessWidget {
+class Myself extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("小组"),
+        title: Text("我的"),
       ),
       body: Center(
-        child: Text("小组", style: TextStyle(fontSize: 30),),
+        child: Text("我的", style: TextStyle(fontSize: 30),),
       ),
     );
   }

@@ -1,4 +1,3 @@
-//import 'package:douban_app/models/home_model.dart';
 import 'package:school_wall_app/models/home_model.dart';
 import 'http_request.dart';
 

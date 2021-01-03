@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
+import 'config/app_config.dart' as AppConfig;
 import 'views/home/home.dart';
-import 'views/subject/subject.dart';
-import 'views/group/group.dart';
-import 'views/mall/mall.dart';
-import 'views/profile/profile.dart';
+import 'views/publish/publish.dart';
+import 'views/myself/myself.dart';
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "豆瓣",
+      title: "校园生活JIA",
       theme: ThemeData(
-        primaryColor: Colors.green,
+        primaryColor: AppConfig.PRIMARY_COLOR,
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent
       ),
@@ -39,10 +38,8 @@ class _MyStackPageState extends State<MyStackPage> {
         type: BottomNavigationBarType.fixed,
         items: [
           createItem("home", "首页"),
-          createItem("subject", "书影音"),
-          createItem("group", "小组"),
-          createItem("mall", "市集"),
-          createItem("profile", "我的"),
+          createItem("publish", "发布"),
+          createItem("myself", "我的"),
         ],
         onTap: (index) {
           setState(() {
@@ -54,10 +51,8 @@ class _MyStackPageState extends State<MyStackPage> {
         index: _currentIndex,
         children: <Widget>[
           Home(),
-          Subject(),
-          Group(),
-          Mall(),
-          Profile()
+          Publish(),
+          Myself()
         ],
       ),
     );
@@ -67,7 +62,8 @@ class _MyStackPageState extends State<MyStackPage> {
 BottomNavigationBarItem createItem(String iconName, String title) {
   return BottomNavigationBarItem(
       icon: Image.asset("assets/images/tabbar/$iconName.png", width: 30,),
-      activeIcon: Image.asset("assets/images/tabbar/${iconName}_active.png", width: 30,)
+      activeIcon: Image.asset("assets/images/tabbar/${iconName}-active.png", width: 30,),
+      title: Text(title)
   );
 }
 

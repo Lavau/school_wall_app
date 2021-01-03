@@ -1,5 +1,5 @@
 import 'package:school_wall_app/models/home_model.dart';
-import 'package:school_wall_app/network/home_request.dart';
+import 'package:school_wall_app/config/home_request.dart';
 import 'package:school_wall_app/views/home/childCpns/movie_list_item.dart';
 import 'package:flutter/material.dart';
 

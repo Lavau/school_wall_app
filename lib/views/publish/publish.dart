@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class Profile extends StatelessWidget {
+class Publish extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("我的"),
+        title: Text("发布"),
       ),
       body: Center(
-        child: Text("我的", style: TextStyle(fontSize: 30),),
+        child: Text("发布", style: TextStyle(fontSize: 30),),
       ),
     );
   }
