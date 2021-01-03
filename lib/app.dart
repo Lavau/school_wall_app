@@ -1,20 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:school_wall_app/views/register.dart';
 import 'config/app_config.dart' as AppConfig;
+import 'config/route_config.dart' as RouteConfig;
 import 'views/home/home.dart';
 import 'views/publish/publish.dart';
 import 'views/myself/myself.dart';
+import 'views/login.dart';
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "校园生活JIA",
       theme: ThemeData(
         primaryColor: AppConfig.PRIMARY_COLOR,
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent
       ),
-      home: MyStackPage(),
+      home: AppConfig.isLogin ? MyStackPage() : _dialog(context),
+      routes: RouteConfig.route,
+    );
+  }
+
+  Widget _dialog(BuildContext context) {
+    return AlertDialog(
+      title: Text("请登录"),
+      actions: <Widget>[
+        FlatButton(
+          child: Text("取消"),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        FlatButton(
+          child: Center(child: Text("确定")),
+          onPressed: () {
+              print("点击确定");
+              Navigator.of(context).pushNamedAndRemoveUntil("/login", (route) => false);
+            },
+        ),
+      ],
     );
   }
 }
