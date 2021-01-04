@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import 'http_config.dart' as httpConfig;
+import 'http_config.dart' as HttpConfig;
 
 class HttpRequest {
   // 1.创建实例对象
   static BaseOptions baseOptions = BaseOptions
-      (connectTimeout: httpConfig.TIMEOUT, baseUrl: httpConfig.BASE_URL);
+      (connectTimeout: HttpConfig.TIMEOUT, baseUrl: HttpConfig.BASE_URL);
 
   static Dio dio = Dio(baseOptions);
 

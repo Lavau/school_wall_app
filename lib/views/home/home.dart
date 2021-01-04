@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:school_wall_app/config/home_request.dart';
-import 'package:school_wall_app/models/home_model.dart';
-import 'package:school_wall_app/views/home/childCpns/movie_list_item.dart';
-
-const COUNT = 20;
+import 'package:school_wall_app/config/http_request.dart';
+import 'package:school_wall_app/models/index.dart';
+import 'package:dio/dio.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -25,40 +23,29 @@ class HomeContent extends StatefulWidget {
 }
 
 class _HomeContentState extends State<HomeContent> {
-  // 初始化首页的网络请求对象
-  HomeRequest homeRequest = HomeRequest();
 
-  int _start = 0;
-  List<MovieItem> movies = [];
+  List<Index> _list;
+  int _pageNum;
+  int _pages;
+
+  String text = "wu";
 
   @override
-  void initState() {
+  initState(){
     super.initState();
-
-    // 请求电影列表数据
-    getMovieTopList(_start, COUNT);
+    data();
   }
 
-  void getMovieTopList(start, count) {
-    homeRequest.getMovieTopList(start, count).then((result) {
-      setState(() {
-        movies.addAll(result);
-      });
-    });
+  data() async {
+    Dio dio = new Dio();
+    Response response = await dio.get("http://localhost:8080/app/noLogin/index");
+    print("+++++++++++++++++++");
+    print(response.data.toString());
   }
 
   @override
   Widget build(BuildContext context) {
-    return _listView();
-  }
-
-  ListView _listView() {
-    return ListView.builder(
-      itemCount: movies.length,
-      itemBuilder: (BuildContext context, int index) {
-        return MovieListItem(movies[index]);
-      }
-    );
+    return Center(child: Text(text),);
   }
 
   Widget _dialog(BuildContext context) {
