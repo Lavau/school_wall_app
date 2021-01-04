@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:school_wall_app/views/register.dart';
 import 'config/app_config.dart' as AppConfig;
 import 'config/route_config.dart' as RouteConfig;
 import 'views/home/home.dart';
 import 'views/publish/publish.dart';
 import 'views/myself/myself.dart';
-import 'views/login.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -16,27 +14,8 @@ class MyApp extends StatelessWidget {
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent
       ),
-      home: AppConfig.isLogin ? MyStackPage() : _dialog(context),
+      home: MyStackPage(),
       routes: RouteConfig.route,
-    );
-  }
-
-  Widget _dialog(BuildContext context) {
-    return AlertDialog(
-      title: Text("请登录"),
-      actions: <Widget>[
-        FlatButton(
-          child: Text("取消"),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        FlatButton(
-          child: Center(child: Text("确定")),
-          onPressed: () {
-              print("点击确定");
-              Navigator.of(context).pushNamedAndRemoveUntil("/login", (route) => false);
-            },
-        ),
-      ],
     );
   }
 }
@@ -53,32 +32,39 @@ class _MyStackPageState extends State<MyStackPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        selectedFontSize: 14,
-        unselectedFontSize: 14,
-        type: BottomNavigationBarType.fixed,
-        items: [
-          createItem("home", "首页"),
-          createItem("publish", "发布"),
-          createItem("myself", "我的"),
-        ],
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-      ),
-      body: IndexedStack(
-        index: _currentIndex,
-        children: <Widget>[
-          Home(),
-          Publish(),
-          Myself()
-        ],
-      ),
+      bottomNavigationBar: _bottomNavigationBar(),
+      body: _indexedStack(),
     );
   }
+
+  IndexedStack _indexedStack() {
+    return IndexedStack(
+      index: _currentIndex,
+      children: <Widget>[
+        Home(),
+        Publish(),
+        Myself()
+      ],
+    );
+  }
+
+  Widget _bottomNavigationBar() {
+    return BottomNavigationBar(
+      currentIndex: _currentIndex,
+      selectedFontSize: 14,
+      unselectedFontSize: 14,
+      type: BottomNavigationBarType.fixed,
+      items: [
+        createItem("home", "首页"),
+        createItem("publish", "发布"),
+        createItem("myself", "我的"),
+      ],
+      onTap: (index) {
+          setState(() => _currentIndex = index );
+      },
+    );
+  }
+
 }
 
 BottomNavigationBarItem createItem(String iconName, String title) {
