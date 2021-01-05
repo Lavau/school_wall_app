@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:school_wall_app/config/http_request.dart';
 import 'package:school_wall_app/models/index.dart';
-import 'package:dio/dio.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -37,10 +36,7 @@ class _HomeContentState extends State<HomeContent> {
   }
 
   data() async {
-    Dio dio = new Dio();
-    Response response = await dio.get("http://localhost:8080/app/noLogin/index");
-    print("+++++++++++++++++++");
-    print(response.data.toString());
+    print((await HttpRequest.request("/noLogin/index")));
   }
 
   @override

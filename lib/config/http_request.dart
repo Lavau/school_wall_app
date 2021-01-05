@@ -3,8 +3,7 @@ import 'http_config.dart' as HttpConfig;
 
 class HttpRequest {
   // 1.创建实例对象
-  static BaseOptions baseOptions = BaseOptions
-      (connectTimeout: HttpConfig.TIMEOUT, baseUrl: HttpConfig.BASE_URL);
+  static BaseOptions baseOptions = BaseOptions(connectTimeout: HttpConfig.TIMEOUT);
 
   static Dio dio = Dio(baseOptions);
 
@@ -15,7 +14,7 @@ class HttpRequest {
 
     // 2.发送网络请求
     try {
-      Response response = await dio.request<T>(dio.options.baseUrl + url,
+      Response response = await dio.request<T>(HttpConfig.BASE_URL + url,
           queryParameters: params, options: options);
       return response.data;
     } on DioError catch (e) {
