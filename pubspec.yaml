@@ -26,9 +26,9 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/images/tabBar/home.png
-    - assets/images/tabBar/home-active.png
-    - assets/images/tabBar/myself.png
-    - assets/images/tabBar/myself-active.png
-    - assets/images/tabBar/publish.png
-    - assets/images/tabBar/publish-active.png
+    - assets/images/tabbar/home.png
+    - assets/images/tabbar/home-active.png
+    - assets/images/tabbar/myself.png
+    - assets/images/tabbar/myself-active.png
+    - assets/images/tabbar/publish.png
+    - assets/images/tabbar/publish-active.png
