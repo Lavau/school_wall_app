@@ -31,8 +31,6 @@ class _HomeContentState extends State<HomeContent> {
   int _currentPageNum;
   int _totalPages;
 
-  String text = "wu";
-
   @override
   initState(){
     super.initState();
@@ -92,14 +90,14 @@ class _HomeContentState extends State<HomeContent> {
 
   List<Widget> _renderTypeEcardOfColumnChildren(TypeData typeData) {
     List<Widget> widgetOfBunch = [];
-    widgetOfBunch.add(_iconAndTitleOfListTile("一卡通认领"));
+    widgetOfBunch.add(_iconAndTitleOfLabel("一卡通认领"));
     widgetOfBunch.add(_listTile("学院", typeData.title));
     widgetOfBunch.add(_listTile("学号", typeData.stuId));
     widgetOfBunch.add(_listTile("姓名", typeData.description));
     return widgetOfBunch;
   }
 
-  ListTile _iconAndTitleOfListTile(String titleText) {
+  ListTile _iconAndTitleOfLabel(String titleText) {
     return ListTile(
         leading: Icon(Icons.bookmark_border, color: AppConfig.PRIMARY_COLOR),
         title: Text(titleText, style: TextStyle(color: AppConfig.PRIMARY_COLOR))
@@ -108,8 +106,9 @@ class _HomeContentState extends State<HomeContent> {
 
   ListTile _listTile(String leadingText, String titleText) {
     return ListTile(
-        leading: Text(leadingText),
-        title: Text(titleText)
+      contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+      leading: Text(leadingText),
+      title: Text(titleText)
     );
   }
 
@@ -117,45 +116,70 @@ class _HomeContentState extends State<HomeContent> {
     List<Widget> widgetOfBunch = [];
 
     if (typeData.pictureNum > 0) {
-      widgetOfBunch.add(Image.network(typeData.pictureUrlList[0], height: 150,));
+      _incrementPicturesWidget(typeData, widgetOfBunch);
     }
 
     if (typeData.description.length > 0) {
-      widgetOfBunch.add(Text(typeData.description));
+      widgetOfBunch.add(Text(typeData.description,textAlign: TextAlign.left,style: TextStyle(fontSize: 16)));
     }
 
     if (typeData.description.length == 0 && typeData.title.length > 0) {
       widgetOfBunch.add(Text(typeData.title));
     }
 
-    widgetOfBunch.add(_iconAndTitleOfListTile(typeData.typeName));
+    widgetOfBunch.add(_iconAndTitleOfLabel(typeData.typeName));
 
     Widget bottomColumn = new Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          children: [
-            ClipOval(
-              child: SizedBox(
-                child: Image.network(typeData.avatarUrl),
-                width: 45.0,
-                height: 45.0,
-              ),
-            ),
-           Text(typeData.nickname),],
-        ),
-        Column(
-          children: [
-            Text("${typeData.viewNum} 浏览"),
-            Text(TimeUtil.dateTimeConvertToString(typeData.gmtCreate))
-          ],
-        )
+        _promulgatorInfo(typeData),
+        _viewInfoAndPromulgatorTime(typeData)
       ],
     );
     widgetOfBunch.add(bottomColumn);
     return widgetOfBunch;
   }
-  
-  
+
+  Column _viewInfoAndPromulgatorTime(TypeData typeData) {
+    return Column(
+        children: [
+          Text("${typeData.viewNum} 浏览", style: TextStyle(fontSize: 12),),
+          Text(TimeUtil.dateTimeConvertToString(typeData.gmtCreate),
+            style: TextStyle(fontSize: 12)
+          )
+        ],
+      );
+  }
+
+  Widget _promulgatorInfo(TypeData typeData) {
+    Image avatar = typeData.anonymous ?
+        Image.asset("assets/images/home/anonymity.png") : Image.network(typeData.avatarUrl);
+    return Row(
+      children: [
+        ClipOval(
+          child: SizedBox(
+            child: avatar,
+            width: 30.0,
+            height: 30.0,
+          ),
+        ),
+        SizedBox(width: 8,),
+        Text("${typeData.anonymous ? '匿名' : typeData.nickname}",
+          style: TextStyle(fontSize: 15)
+        )
+      ],
+    );
+  }
+
+  void _incrementPicturesWidget(TypeData typeData, List<Widget> widgetOfBunch) {
+    List<Widget> pictures = [];
+    for (int i = 0; i < typeData.pictureUrlList.length; i++) {
+      pictures.add(Image.network(typeData.pictureUrlList[i], height: 100, width: 100,));
+    }
+    Widget picturesOfRow = Row(
+      children: pictures,
+    );
+    widgetOfBunch.add(picturesOfRow);
+  }
 }
 
