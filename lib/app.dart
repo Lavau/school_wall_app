@@ -64,7 +64,6 @@ class _MyStackPageState extends State<MyStackPage> {
       },
     );
   }
-
 }
 
 BottomNavigationBarItem createItem(String iconName, String title) {

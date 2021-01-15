@@ -120,7 +120,10 @@ class _HomeContentState extends State<HomeContent> {
     }
 
     if (typeData.description.length > 0) {
-      widgetOfBunch.add(Text(typeData.description,textAlign: TextAlign.left,style: TextStyle(fontSize: 16)));
+      widgetOfBunch.add(Text(typeData.description,
+          textAlign: TextAlign.left,
+          style: TextStyle(fontSize: 16))
+      );
     }
 
     if (typeData.description.length == 0 && typeData.title.length > 0) {
@@ -137,18 +140,19 @@ class _HomeContentState extends State<HomeContent> {
       ],
     );
     widgetOfBunch.add(bottomColumn);
+
     return widgetOfBunch;
   }
 
   Column _viewInfoAndPromulgatorTime(TypeData typeData) {
     return Column(
-        children: [
-          Text("${typeData.viewNum} 浏览", style: TextStyle(fontSize: 12),),
-          Text(TimeUtil.dateTimeConvertToString(typeData.gmtCreate),
-            style: TextStyle(fontSize: 12)
-          )
-        ],
-      );
+      children: [
+        Text("${typeData.viewNum} 浏览", style: TextStyle(fontSize: 12),),
+        Text(TimeUtil.dateTimeConvertToString(typeData.gmtCreate),
+          style: TextStyle(fontSize: 12)
+        )
+      ],
+    );
   }
 
   Widget _promulgatorInfo(TypeData typeData) {
