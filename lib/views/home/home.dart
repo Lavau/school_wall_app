@@ -1,10 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:school_wall_app/config/app_config.dart' as AppConfig;
 import 'package:school_wall_app/config/http_request.dart';
 import 'package:school_wall_app/models/type_data.dart';
 import 'package:school_wall_app/myenum/type_enum.dart';
-import 'package:school_wall_app/config/app_config.dart' as AppConfig;
 import 'package:school_wall_app/utils/date_time_util.dart' as TimeUtil;
-import 'dart:convert';
 
 class Home extends StatelessWidget {
   @override

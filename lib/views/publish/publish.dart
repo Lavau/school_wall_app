@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:school_wall_app/config/app_config.dart' as AppConfig;
 import 'package:school_wall_app/components/action_sheet.dart';
+import 'package:school_wall_app/config/app_config.dart' as AppConfig;
 import 'package:school_wall_app/myenum/type_enum.dart';
 import 'package:school_wall_app/views/publish/detail/ecard.dart';
 

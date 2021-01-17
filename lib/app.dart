@@ -73,5 +73,3 @@ BottomNavigationBarItem createItem(String iconName, String title) {
       title: Text(title)
   );
 }
-
-
