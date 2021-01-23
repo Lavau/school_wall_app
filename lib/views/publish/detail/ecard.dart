@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:school_wall_app/components/my_alert_dialog.dart';
 import 'package:school_wall_app/components/my_button.dart';
-import 'package:school_wall_app/utils/http_request.dart';
 import 'package:school_wall_app/models/college.dart';
+import 'package:school_wall_app/utils/http_request.dart';
 
 class Ecard extends StatelessWidget {
   @override
@@ -26,12 +27,12 @@ class _EcardContentState extends State<EcardContent> {
   GlobalKey _formKey= GlobalKey<FormState>();
 
   List<College> _collegesInfo = [];
-  String _collegeId;
+  String _college;
 
   @override
   initState(){
     super.initState();
-    _collegeId = null;
+    _college = null;
     getDataFromServer();
   }
 
@@ -77,7 +78,7 @@ class _EcardContentState extends State<EcardContent> {
             _buildTextFormField(_stuNameController, "姓名", keyBoardType: "text", maxLength: 50, validatorFunc: numOfWordValidatorFunc),
             _buildTextFormField(_claimMsgController, "认领信息", keyBoardType: "text", maxLength: 50, validatorFunc: numOfWordValidatorFunc),
             _collegesInfo.length == 0 ? Text("获取信息") : _buildCollegeOfDropdownButton(),
-            myButton("发布", _deliverDateToServer)
+            myButton("发布", _processData)
           ],
         ),
       );
@@ -99,7 +100,7 @@ class _EcardContentState extends State<EcardContent> {
 
   DropdownButton<String> _buildCollegeOfDropdownButton() {
     return DropdownButton(
-      value: _collegeId,
+      value: _college,
       icon: Icon(Icons.arrow_right),
       iconSize: 40,
       hint: Text('请选择学院'),
@@ -107,7 +108,7 @@ class _EcardContentState extends State<EcardContent> {
       underline: Container(height: 1, color: Colors.grey),
       items: _buildItemsOfDropdownButton(),
       onChanged: (value) {
-        setState(() => _collegeId = value.toString());
+        setState(() => _college = value.toString());
       }
     );
   }
@@ -117,26 +118,38 @@ class _EcardContentState extends State<EcardContent> {
     for (College college in _collegesInfo) {
       dropdownMenuItems.add(DropdownMenuItem(
         child: Text(college.collegeName),
-        value: college.collegeId
+        value: college.collegeName
       ));
     }
     return dropdownMenuItems;
   }
 
-  void _deliverDateToServer() async {
-    if (_collegeId == null) {
+  void _processData() async {
+    if (_college == null) {
       showDialog(context: context, child: AlertDialog(title: Center(child: Text("请选择学院"))));
       return;
     }
     if ((_formKey.currentState as FormState).validate()) {}
 
-    Map params = {
+    _deliverToServerAndObtainResponse().then((resultMap) => {
+      if (resultMap["data"]) {
+        showAlertDialog(context, resultMap["msg"], funcOfSureButton: () => Navigator.pop(context))
+      } else {
+        showAlertDialog(context, resultMap["msg"], showCancel: false, funcOfSureButton: null)
+      }
+    });
+  }
+
+  Future<Map<String, dynamic>> _deliverToServerAndObtainResponse() async {
+    Map<String, String> params = {
       "ecardId": _ecardIdController.text,
       "stuId": _stuIdController.text,
       "stuName": _stuNameController.text,
       "msg": _claimMsgController.text,
-      "collegeId": _collegeId
+      "college": _college
     };
-    String result = await HttpRequest.request("/app/login/ecard/publish", method: "post", params: params);
+    String result = await HttpRequest.request("/login/ecard/publish", method: "post", params: params);
+    return json.decode(result);
   }
+
 }
