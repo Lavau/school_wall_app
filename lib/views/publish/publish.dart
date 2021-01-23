@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:school_wall_app/components/action_sheet.dart';
 import 'package:school_wall_app/config/app_config.dart' as AppConfig;
 import 'package:school_wall_app/myenum/type_enum.dart';
+import 'package:school_wall_app/utils/login_util.dart' as LoginUtil;
 import 'package:school_wall_app/views/publish/detail/ecard.dart';
 
 class Publish extends StatelessWidget {
@@ -41,6 +42,11 @@ class _PublishContentState extends State<PublishContent> {
   }
 
   _selectTypeAction() async {
+    if (AppConfig.isLogin == false) {
+      LoginUtil.showLoginDialog(context);
+      return;
+    }
+
     int indexNum = await showSelectTypeActionSheets(context: context, title: '发布类型');
     if (indexNum == TypeEnum.ECARD_7.index) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => Ecard()));

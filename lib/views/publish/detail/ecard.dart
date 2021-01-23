@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:school_wall_app/config/app_config.dart' as AppConfig;
-import 'package:school_wall_app/config/http_request.dart';
+import 'package:school_wall_app/components/my_button.dart';
+import 'package:school_wall_app/utils/http_request.dart';
 import 'package:school_wall_app/models/college.dart';
 
 class Ecard extends StatelessWidget {
@@ -77,7 +77,7 @@ class _EcardContentState extends State<EcardContent> {
             _buildTextFormField(_stuNameController, "姓名", keyBoardType: "text", maxLength: 50, validatorFunc: numOfWordValidatorFunc),
             _buildTextFormField(_claimMsgController, "认领信息", keyBoardType: "text", maxLength: 50, validatorFunc: numOfWordValidatorFunc),
             _collegesInfo.length == 0 ? Text("获取信息") : _buildCollegeOfDropdownButton(),
-            _publishButton()
+            myButton("发布", _deliverDateToServer)
           ],
         ),
       );
@@ -85,7 +85,8 @@ class _EcardContentState extends State<EcardContent> {
 
   TextFormField _buildTextFormField(TextEditingController controller, String text,
       {String keyBoardType = "number", int maxLength = 10,
-        Function validatorFunc}) {
+        Function validatorFunc}
+  ) {
     return TextFormField(
       maxLength: maxLength,
       keyboardType: "number" == keyBoardType ? TextInputType.number : TextInputType.text,
@@ -120,18 +121,6 @@ class _EcardContentState extends State<EcardContent> {
       ));
     }
     return dropdownMenuItems;
-  }
-
-  Container _publishButton() {
-    return Container(
-        margin: EdgeInsets.all(10),
-        width: 400,
-        decoration: BoxDecoration(border: Border.all(color: AppConfig.PRIMARY_COLOR)),
-        child: FlatButton(
-            child: Text("发布"),
-            onPressed: _deliverDateToServer
-        )
-    );
   }
 
   void _deliverDateToServer() async {

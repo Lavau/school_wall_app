@@ -11,8 +11,15 @@
 //keyPassword=还是你自己设置的密码，我反正从来都是123456
 //keyAlias=key
 //storeFile=key.jks在你电脑上的路径
-import 'package:flutter/material.dart';
-import 'app.dart';
 
-void main() => runApp(MyApp());
+import 'package:flutter/material.dart';
+
+import 'app.dart';
+import 'utils/login_util.dart' as LoginUtil;
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  LoginUtil.obtainLoginStatus();
+  runApp(MyApp());
+}
 
