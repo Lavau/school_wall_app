@@ -8,25 +8,21 @@ import 'package:path_provider/path_provider.dart';
 import '../config/http_config.dart' as HttpConfig;
 
 class HttpRequest {
-  // 1.创建实例对象
-  static BaseOptions baseOptions = BaseOptions(connectTimeout: HttpConfig.TIMEOUT);
+  static BaseOptions _baseOptions = BaseOptions(connectTimeout: HttpConfig.TIMEOUT);
 
-  static Future<Dio> getDio() async {
+  static Future<Dio> _getDio() async {
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;
-    var dio = Dio(baseOptions);
+    var dio = Dio(_baseOptions);
     dio.interceptors.add(CookieManager(PersistCookieJar(dir: tempPath)));
     return dio;
   }
 
   static Future<T> request<T>(String url, {String method = "get", Map<String, dynamic> params}) async {
-    // 1.单独相关的设置
     Options options = Options();
     options.method = method;
 
-    Dio dio = (await getDio());
-
-    // 2.发送网络请求
+    Dio dio = (await _getDio());
     try {
       Response response = await dio.request<T>(HttpConfig.BASE_URL + url,
           queryParameters: params, options: options);

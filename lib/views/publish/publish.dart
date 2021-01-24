@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:school_wall_app/components/action_sheet.dart';
 import 'package:school_wall_app/config/app_config.dart' as AppConfig;
+import 'package:school_wall_app/config/route_config.dart';
 import 'package:school_wall_app/myenum/type_enum.dart';
 import 'package:school_wall_app/utils/login_util.dart' as LoginUtil;
-import 'package:school_wall_app/views/publish/detail/ecard.dart';
 
 class Publish extends StatelessWidget {
   @override
@@ -47,21 +47,20 @@ class _PublishContentState extends State<PublishContent> {
       return;
     }
 
-    int indexNum = await showSelectTypeActionSheets(context: context, title: '发布类型');
-    if (indexNum == TypeEnum.ECARD_7.index) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Ecard()));
+    int typeIndex = await showSelectTypeActionSheets();
+    if (typeIndex == TypeEnum.ECARD_7.index) {
+      Navigator.pushNamed(context, RouteName.PUBLISH_DETAIL_ECARD);
+    } else {
+      Navigator.pushNamed(context, RouteName.PUBLISH_DETAIL_OTHERS, arguments: typeIndex);
     }
   }
 
-  Future<int> showSelectTypeActionSheets({
-    @required BuildContext context,
-    @required String title,
-  }) {
+  Future<int> showSelectTypeActionSheets() {
     return showCustomBottomSheet(
       titleColor: AppConfig.PRIMARY_COLOR,
       titleFontSize: 15,
       context: context,
-      title: title,
+      title: '发布类型',
       children: [
         actionItem(context: context, index: 4, title: '失物'),
         actionItem(context: context, index: 5, title: '求助'),

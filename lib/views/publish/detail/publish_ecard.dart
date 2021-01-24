@@ -5,8 +5,9 @@ import 'package:school_wall_app/components/my_alert_dialog.dart';
 import 'package:school_wall_app/components/my_button.dart';
 import 'package:school_wall_app/models/college.dart';
 import 'package:school_wall_app/utils/http_request.dart';
+import 'package:school_wall_app/views/publish/components/text_form_field.dart';
 
-class Ecard extends StatelessWidget {
+class PublishEcard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return EcardContent();
@@ -73,29 +74,15 @@ class _EcardContentState extends State<EcardContent> {
         key: _formKey,
         child: ListView(
           children: <Widget>[
-            _buildTextFormField(_ecardIdController, "一卡通号", validatorFunc: ecardIdValidatorFunc),
-            _buildTextFormField(_stuIdController, "学号", maxLength: 9, validatorFunc: stuIdValidatorFunc),
-            _buildTextFormField(_stuNameController, "姓名", keyBoardType: "text", maxLength: 50, validatorFunc: numOfWordValidatorFunc),
-            _buildTextFormField(_claimMsgController, "认领信息", keyBoardType: "text", maxLength: 50, validatorFunc: numOfWordValidatorFunc),
+            buildTextFormField(_ecardIdController, "一卡通号", validatorFunc: ecardIdValidatorFunc),
+            buildTextFormField(_stuIdController, "学号", maxLength: 9, validatorFunc: stuIdValidatorFunc),
+            buildTextFormField(_stuNameController, "姓名", keyBoardType: "text", maxLength: 50, validatorFunc: numOfWordValidatorFunc),
+            buildTextFormField(_claimMsgController, "认领信息", keyBoardType: "text", maxLength: 50, validatorFunc: numOfWordValidatorFunc),
             _collegesInfo.length == 0 ? Text("获取信息") : _buildCollegeOfDropdownButton(),
             myButton("发布", _processData)
           ],
         ),
       );
-  }
-
-  TextFormField _buildTextFormField(TextEditingController controller, String text,
-      {String keyBoardType = "number", int maxLength = 10,
-        Function validatorFunc}
-  ) {
-    return TextFormField(
-      maxLength: maxLength,
-      keyboardType: "number" == keyBoardType ? TextInputType.number : TextInputType.text,
-      autofocus: true,
-      controller: controller,
-      decoration: InputDecoration(labelText: text, hintText: "请输入$text"),
-      validator: validatorFunc,
-    );
   }
 
   DropdownButton<String> _buildCollegeOfDropdownButton() {
@@ -133,9 +120,11 @@ class _EcardContentState extends State<EcardContent> {
 
     _deliverToServerAndObtainResponse().then((resultMap) => {
       if (resultMap["data"]) {
-        showAlertDialog(context, resultMap["msg"], funcOfSureButton: () => Navigator.pop(context))
+        showAlertDialog(context, resultMap["msg"],
+            showCancel: false, funcOfSureButton: () => Navigator.pop(context))
       } else {
-        showAlertDialog(context, resultMap["msg"], showCancel: false, funcOfSureButton: null)
+        showAlertDialog(context, resultMap["msg"],
+            showCancel: false, funcOfSureButton: null)
       }
     });
   }
