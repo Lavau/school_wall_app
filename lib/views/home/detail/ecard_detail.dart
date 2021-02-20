@@ -39,10 +39,10 @@ class _EcardDetailContentState extends State<EcardDetailContent> {
   void initState() {
     _ecard = null;
     _isClaim = null;
-    getDetailDataOfEcardFromServer();
+    getDetailInfoOfEcardFromServer();
   }
 
-  getDetailDataOfEcardFromServer() async {
+  getDetailInfoOfEcardFromServer() async {
     String result = await HttpRequest.request("/login/ecard/detail", params: {"id": widget.id});
     Map<String, dynamic> resultMap = json.decode(result);
     setState(() {

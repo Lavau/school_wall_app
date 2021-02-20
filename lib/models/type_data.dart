@@ -9,7 +9,9 @@ part 'type_data.g.dart';
 class TypeData{
   TypeData(this.anonymous, this.avatarUrl, this.description, this.gmtCreate,
       this.id, this.nickname, this.pictureNum, this.promulgatorId, this.title,
-      this.typeId, this.typeName, this.viewNum, this.pictureUrlList, this.stuId);
+      this.typeId, this.typeName, this.viewNum, this.pictureUrlList, this.stuId,
+      this.likeNum, this.commentNum, this.like, this.msg, this.contactInformation,
+      this.height, this.interest, this.speciality, this.weight);
 
   bool anonymous;
   String avatarUrl;
@@ -25,6 +27,17 @@ class TypeData{
   String typeName;
   int viewNum;
   List<String> pictureUrlList;
+
+  int likeNum;
+  int commentNum;
+  bool like;
+  String msg;
+
+  String contactInformation;
+  double height;
+  double weight;
+  String speciality;
+  String interest;
 
   //不同的类使用不同的mixin即可
   factory TypeData.fromJson(Map<String, dynamic> json) => _$TypeDataFromJson(json);

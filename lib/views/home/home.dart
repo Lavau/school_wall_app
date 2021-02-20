@@ -69,8 +69,7 @@ class _HomeContentState extends State<HomeContent> {
       child: InkWell(
         child: Column(children: _columnChildrenOfListView(_showListOfTypeData[index])),
         onTap: () => goToDetailPage(_showListOfTypeData[index]),
-      ),
-//    child: Column(children: _columnChildrenOfListView(_showListOfTypeData[index])),
+      )
     );
   }
 
@@ -83,7 +82,11 @@ class _HomeContentState extends State<HomeContent> {
     if (typeData.typeId == TypeEnum.ECARD_7.index) {
       Navigator.pushNamed(context, RouteName.SHOW_DETAIL_ECARD, arguments: typeData.id);
     } else {
-//      Navigator.pushNamed(context, RouteName.PUBLISH_DETAIL_OTHERS, arguments: typeIndex);
+      Map<String, dynamic> arguments = {
+        "typeId": typeData.typeId,
+        "id": typeData.id
+      };
+      Navigator.pushNamed(context, RouteName.SHOW_DETAIL_OTHERS, arguments: arguments);
     }
   }
 
