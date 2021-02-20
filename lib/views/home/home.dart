@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:school_wall_app/config/app_config.dart' as AppConfig;
+import 'package:school_wall_app/config/route_config.dart';
 import 'package:school_wall_app/models/type_data.dart';
 import 'package:school_wall_app/myenum/type_enum.dart';
 import 'package:school_wall_app/utils/date_time_util.dart' as TimeUtil;
 import 'package:school_wall_app/utils/http_request.dart';
+import 'package:school_wall_app/utils/login_util.dart' as LoginUtil;
 
 class Home extends StatelessWidget {
   @override
@@ -64,10 +66,25 @@ class _HomeContentState extends State<HomeContent> {
       margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
       padding: EdgeInsets.all(5),
       decoration: _boxDecoration(),
-      child: Column(
-        children: _columnChildrenOfListView(_showListOfTypeData[index]),
+      child: InkWell(
+        child: Column(children: _columnChildrenOfListView(_showListOfTypeData[index])),
+        onTap: () => goToDetailPage(_showListOfTypeData[index]),
       ),
+//    child: Column(children: _columnChildrenOfListView(_showListOfTypeData[index])),
     );
+  }
+
+  goToDetailPage(TypeData typeData) {
+    if (AppConfig.isLogin == false) {
+      LoginUtil.showLoginDialog(context);
+      return;
+    }
+
+    if (typeData.typeId == TypeEnum.ECARD_7.index) {
+      Navigator.pushNamed(context, RouteName.SHOW_DETAIL_ECARD, arguments: typeData.id);
+    } else {
+//      Navigator.pushNamed(context, RouteName.PUBLISH_DETAIL_OTHERS, arguments: typeIndex);
+    }
   }
 
   BoxDecoration _boxDecoration() {

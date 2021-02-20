@@ -6,6 +6,8 @@ import 'package:school_wall_app/components/my_button.dart';
 import 'package:school_wall_app/myenum/type_enum.dart';
 import 'package:school_wall_app/utils/http_request.dart';
 import 'package:school_wall_app/utils/type_util.dart';
+import 'package:school_wall_app/utils/uuid_util.dart';
+import 'package:school_wall_app/views/publish/components/publish_others_picture.dart';
 import 'package:school_wall_app/views/publish/components/text_form_field.dart';
 
 class PublishOthers extends StatelessWidget {
@@ -40,9 +42,18 @@ class _PublishOthersContentState extends State<PublishOthersContent> {
 
    GlobalKey _formKey= GlobalKey<FormState>();
 
-   bool _isAnonymous = false;
+   String _id;
+   bool _isAnonymous;
+   PublishOthersPicture picturesWidget;
 
-  @override
+   @override
+   void initState() {
+     _id = uuid();
+     _isAnonymous = false;
+     picturesWidget  = PublishOthersPicture(id: _id, typeId: widget.typeIndex);
+   }
+
+   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
@@ -73,6 +84,8 @@ class _PublishOthersContentState extends State<PublishOthersContent> {
     widgets.add(descriptionTextFormField);
 
     _buildMsgWidgetForTypeSingleOrLostAndFound(widgets, validtorFunc: validatorFunc);
+
+    widgets.add(picturesWidget);
 
     widgets.add(_buildAnonymousButton());
 
@@ -120,12 +133,12 @@ class _PublishOthersContentState extends State<PublishOthersContent> {
    void _buildMsgWidgetForTypeSingleOrLostAndFound(List<Widget> widgets, {Function validtorFunc = null}) {
      if (widget.typeIndex == TypeEnum.LOST_AND_FOUND_4.index) {
        TextFormField titleTextFormField =
-          buildTextFormField(_titleEditingController, "认领信息", maxLength: 20, validatorFunc: validtorFunc);
+          buildTextFormField(_msgEditingController, "认领信息", maxLength: 20, validatorFunc: validtorFunc);
        widgets.add(titleTextFormField);
      }
      if (widget.typeIndex == TypeEnum.SINGLE_6.index) {
        TextFormField titleTextFormField =
-          buildTextFormField(_titleEditingController, "联系方式", maxLength: 20, validatorFunc: null);
+          buildTextFormField(_msgEditingController, "联系方式", maxLength: 20, validatorFunc: null);
        widgets.add(titleTextFormField);
      }
    }
@@ -147,19 +160,23 @@ class _PublishOthersContentState extends State<PublishOthersContent> {
    }
 
    Future<Map<String, dynamic>> _deliverToServerAndObtainResponse() async {
-     Map<String, dynamic> params = {
-       "typeId": widget.typeIndex,
-       "title": _titleEditingController.text,
-       "height": _heightEditingController.text,
-       "weight": _weightEditingController.text,
-       "speciality": _specialityEditingController.text,
-       "interest": _interestEditingController.text,
-       "description": _descriptionEditingController.text,
-       "msg": _msgEditingController.text,
-       "pictureNum": 0,
-       "anonymous": _isAnonymous
-     };
-     String result = await HttpRequest.request("/login/others/publish", method: "post", params: params);
-     return json.decode(result);
+     return picturesWidget.obtainPictures().then((pictures) async {
+       Map<String, dynamic> params = {
+         "id": _id,
+         "typeId": widget.typeIndex,
+         "title": _titleEditingController.text,
+         "height": _heightEditingController.text,
+         "weight": _weightEditingController.text,
+         "speciality": _specialityEditingController.text,
+         "interest": _interestEditingController.text,
+         "description": _descriptionEditingController.text,
+         "msg": _msgEditingController.text,
+         "pictureNum": pictures.length,
+         "anonymous": _isAnonymous,
+         "pictures": pictures
+       };
+       String result = await HttpRequest.request("/login/others/publish", method: "post", params: params);
+       return json.decode(result);
+     });
    }
 }
