@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school_wall_app/views/login.dart';
 
 import 'config/app_config.dart' as AppConfig;
 import 'config/route_config.dart' as RouteConfig;
@@ -15,7 +16,6 @@ class MyApp extends StatelessWidget {
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent
       ),
-//      home: Login(),
       home: MyStackPage(),
       routes: RouteConfig.route,
     );
@@ -62,7 +62,7 @@ class _MyStackPageState extends State<MyStackPage> {
       children: <Widget>[
         Home(),
         Publish(),
-        Myself()
+        AppConfig.isLogin ? Myself() : Login()
       ],
     );
   }

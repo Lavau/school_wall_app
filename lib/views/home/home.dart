@@ -46,9 +46,11 @@ class _HomeContentState extends State<HomeContent> {
     Map<String, dynamic> resultMap = json.decode(result);
     _currentPageNum = resultMap["data"]["pageNum"];
     _totalPages = resultMap["data"]["pages"];
+    List<TypeData> typeDatas = [];
     for (var item in resultMap["data"]["list"]) {
-      _showListOfTypeData.add(TypeData.fromJson(item));
+      typeDatas.add(TypeData.fromJson(item));
     }
+    setState(() => _showListOfTypeData = typeDatas);
   }
 
   @override

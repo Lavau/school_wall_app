@@ -98,4 +98,3 @@ class _LoginContentState extends State<LoginContent> {
     }
   }
 }
-
