@@ -5,6 +5,8 @@ import 'package:school_wall_app/models/type_data.dart';
 import 'package:school_wall_app/myenum/type_enum.dart';
 import 'package:school_wall_app/utils/date_time_util.dart' as TimeUtil;
 import 'package:school_wall_app/utils/http_request.dart';
+import 'package:school_wall_app/views/home/detail/components/show_comments_of_type_data.dart';
+import 'package:school_wall_app/views/home/detail/components/like_and_comment_and_show_some_info.dart';
 
 class OthersDetail extends StatelessWidget {
   @override
@@ -68,13 +70,22 @@ class _OthersDetailContentState extends State<OthersDetailContent> {
   Widget _bodyOfOthers() {
     return Container(
       child: ListView(
-        children: [
-          _promulgatorInfoAndPromulgatorDate(),
-          _typeData.typeId == TypeEnum.SINGLE_6.index ? _singlePersonInfo() : _titleInfo(),
-          _showDescription()
-        ],
+        children: _widgetOfBodyOfOthers(),
       ),
     );
+  }
+
+  List<Widget> _widgetOfBodyOfOthers() {
+    List<Widget> widgets = [];
+    widgets.add(_promulgatorInfoAndPromulgatorDate());
+    widgets.add(_typeData.typeId == TypeEnum.SINGLE_6.index ? _singlePersonInfo() : _titleInfo());
+    widgets.add(_showDescription());
+    if (_typeData.pictureNum > 0) {
+      widgets.add(_showPictures());
+    }
+    widgets.add(LikeAndCommentAndShowSomeInfo(typeData: _typeData));
+    widgets.add(ShowCommentsOfTypeData(attachedId: _typeData.id));
+    return widgets;
   }
 
   Widget _promulgatorInfoAndPromulgatorDate() {
@@ -112,10 +123,10 @@ class _OthersDetailContentState extends State<OthersDetailContent> {
   Widget _singlePersonInfo() {
     return Column(
       children: [
-        ListTile(leading: Text("身高"), title: Text("${_typeData.height}")),
-        ListTile(leading: Text("体重"), title: Text("${_typeData.weight}")),
-        ListTile(leading: Text("特长"), title: Text("${_typeData.speciality}")),
-        ListTile(leading: Text("爱好"), title: Text("${_typeData.interest}")),
+        _typeData.height == null ? null : ListTile(leading: Text("身高"), title: Text("${_typeData.height} cm")),
+        _typeData.weight == null ? null : ListTile(leading: Text("体重"), title: Text("${_typeData.weight} kg")),
+        _typeData.speciality == null ? null : ListTile(leading: Text("特长"), title: Text("${_typeData.speciality}")),
+        _typeData.interest == null ? null : ListTile(leading: Text("爱好"), title: Text("${_typeData.interest}")),
       ],
     );
   }
@@ -123,17 +134,27 @@ class _OthersDetailContentState extends State<OthersDetailContent> {
   Widget _titleInfo() {
     String leadingText = _typeData.typeId == TypeEnum.LOST_AND_FOUND_4.index ? "物品" : "主题";
     return ListTile(
-      leading: Text("$leadingText :"),
+      leading: Text("$leadingText"),
       title: Text(_typeData.title)
     );
   }
 
   Widget _showDescription() {
-    return Column(
+    return _typeData.description == null ? null : Column(
       children: [
         ListTile(leading: Text("具体描述")),
         Text("${_typeData.description}")
       ],
+    );
+  }
+
+  Widget _showPictures() {
+    List<Widget> pictures = [];
+    for (int i = 0; i < _typeData.pictureNum; i++) {
+      pictures.add(Image.network(_typeData.pictureUrlList[i], height: 100, width: 100,));
+    }
+    return Row(
+      children: pictures,
     );
   }
 }

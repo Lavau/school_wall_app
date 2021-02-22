@@ -10,7 +10,6 @@ class EcardDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     String id = ModalRoute.of(context).settings.arguments;
 
-    print("$id");
     return Scaffold(
       appBar: AppBar(title: Text("一卡通详情")),
       body: EcardDetailContent(id: id),
